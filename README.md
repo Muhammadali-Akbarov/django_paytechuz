@@ -1,57 +1,69 @@
-# PayTech UZ Django - Order Creation API
+# PayTech UZ Django 💳
 
-Simple Django REST API for creating orders with Payme and Click payment integration.
+Simple Django REST API for creating orders with **Payme** and **Click** payment integration.
 
-## Setup
+## 🚀 Quick Start
 
 1. **Install dependencies:**
+
 ```bash
-pip install django djangorestframework paytechuz
+pip install -r requirements.txt
 ```
 
-2. **Run migrations:**
+2. **Setup environment variables:**
+
+```bash
+cp .env.example .env
+# Edit .env with your payment gateway credentials
+```
+
+3. **Run migrations:**
+
 ```bash
 python manage.py migrate
 ```
 
-3. **Start server:**
+4. **Start server:**
+
 ```bash
 python manage.py runserver
 ```
 
-## API Usage
+Visit: http://127.0.0.1:8000/
+
+## 📋 API Usage
 
 ### Create Order
 
-**Endpoint:** `POST /api/orders/create`
+**POST** `/api/orders/create`
 
-**Request:**
 ```json
 {
-    "product_name": "Test Product",
-    "amount": "100.00",
-    "payment_type": "payme"
+  "product_name": "Test Product",
+  "amount": "100.00",
+  "payment_type": "payme"
 }
 ```
 
 **Response:**
+
 ```json
 {
-    "order_id": 1,
-    "payment_url": "https://test.paycom.uz/...",
-    "payment_type": "payme",
-    "amount": "100.00",
-    "status": "pending"
+  "order_id": 1,
+  "payment_url": "https://test.paycom.uz/...",
+  "payment_type": "payme",
+  "amount": "100.00",
+  "status": "pending"
 }
 ```
 
-### Payment Types
+**Payment Types:**
+
 - `payme` - Payme payment gateway
 - `click` - Click payment gateway
 
-## cURL Examples
+## 🧪 Test with cURL
 
-**Payme:**
 ```bash
 curl -X POST http://127.0.0.1:8000/api/orders/create \
   -H "Content-Type: application/json" \
@@ -62,43 +74,23 @@ curl -X POST http://127.0.0.1:8000/api/orders/create \
   }'
 ```
 
-**Click:**
-```bash
-curl -X POST http://127.0.0.1:8000/api/orders/create \
-  -H "Content-Type: application/json" \
-  -d '{
-    "product_name": "Test Product",
-    "amount": "100.00",
-    "payment_type": "click"
-  }'
+## ⚙️ Configuration
+
+Create `.env` file with your payment gateway credentials:
+
+```env
+PAYME_ID=your_payme_id
+PAYME_KEY=your_payme_key
+CLICK_SERVICE_ID=your_service_id
+CLICK_MERCHANT_ID=your_merchant_id
+CLICK_MERCHANT_USER_ID=your_merchant_user_id
+CLICK_SECRET_KEY=your_secret_key
 ```
 
-## Configuration
+## ✨ Features
 
-Update `backend/settings.py` with your payment gateway credentials:
-
-```python
-PAYTECHUZ = {
-    'PAYME': {
-        'PAYME_ID': 'your_payme_id',
-        'PAYME_KEY': 'your_payme_key',
-        'IS_TEST_MODE': True,
-    },
-    'CLICK': {
-        'SERVICE_ID': 'your_service_id',
-        'MERCHANT_ID': 'your_merchant_id',
-        'MERCHANT_USER_ID': 'your_merchant_user_id',
-        'SECRET_KEY': 'your_secret_key',
-        'IS_TEST_MODE': True,
-    }
-}
-```
-
-## Features
-
-- ✅ Order creation with payment integration
-- ✅ Payme payment gateway support
-- ✅ Click payment gateway support
-- ✅ REST API with JSON responses
-- ✅ Input validation
-- ✅ Error handling
+- 💳 **Payme** payment gateway integration
+- 🔗 **Click** payment gateway integration
+- 🚀 Simple REST API
+- ✅ Order management
+- 🔒 Input validation & error handling
