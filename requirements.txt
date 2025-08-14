@@ -1,5 +1,5 @@
 Django==5.2.5
 djangorestframework==3.15.2
-paytechuz==1.0.0
+paytechuz==0.2.24
 environs==11.0.0
 requests==2.32.4
