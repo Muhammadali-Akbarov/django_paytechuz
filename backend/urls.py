@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('shop.urls')),
     path('', include('payment.urls')),
+    path('', include('atmos.urls')),
 ]

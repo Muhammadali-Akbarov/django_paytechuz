@@ -26,8 +26,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         
     def validate_payment_type(self, value):
         """Validate payment type."""
-        if value not in ['payme', 'click']:
-            raise serializers.ValidationError("Payment type must be either 'payme' or 'click'")
+        if value not in ['payme', 'click', 'atmos']:
+            raise serializers.ValidationError("Payment type must be 'payme', 'click', or 'atmos'")
         return value
 
 

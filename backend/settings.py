@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'paytechuz.integrations.django',
     'shop',
     'payment',
+    'atmos',
 ]
 
 PAYTECHUZ = {
@@ -68,6 +69,16 @@ PAYTECHUZ = {
         'COMMISSION_PERCENT': 0.0,
         'IS_TEST_MODE': True,
     }
+}
+
+# Atmos payment gateway configuration
+ATMOS = {
+    'CONSUMER_KEY': env.str('ATMOS_CONSUMER_KEY', default=''),
+    'CONSUMER_SECRET': env.str('ATMOS_CONSUMER_SECRET', default=''),
+    'STORE_ID': env.str('ATMOS_STORE_ID', default=''),
+    'TERMINAL_ID': env.str('ATMOS_TERMINAL_ID', default=''),
+    'API_KEY': env.str('ATMOS_API_KEY',),
+    'IS_TEST_MODE': env.bool('ATMOS_TEST_MODE', default=True),
 }
 
 

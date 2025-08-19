@@ -6,6 +6,7 @@ from paytechuz.gateways.click import ClickGateway
 from django.conf import settings
 
 from .serializers import OrderCreateSerializer, PaymentLinkResponseSerializer
+from atmos.services import AtmosService, AtmosAPIError
 
 
 class CreateOrderAPIView(APIView):
@@ -76,6 +77,16 @@ def generate_payment_link(order):
         )
         return result.get("payment_url")
 
+    if order.payment_type == 'atmos':
+        try:
+            atmos_service = AtmosService()
+            transaction = atmos_service.create_payment_link(
+                amount=order.amount,
+                account=str(order.id)  # Order ID as account
+            )
+            # payment_url is stored as attribute, not in model
+            return transaction.payment_url
+        except AtmosAPIError as e:
+            raise ValueError(f"Atmos payment error: {str(e)}")
+
     raise ValueError(f"Unsupported payment type: {order.payment_type}")
-
-
