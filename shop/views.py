@@ -3,10 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from paytechuz.gateways.payme import PaymeGateway
 from paytechuz.gateways.click import ClickGateway
+from paytechuz.gateways.atmos import AtmosGateway
+from paytechuz.integrations.django.models import PaymentTransaction
 from django.conf import settings
 
 from .serializers import OrderCreateSerializer, PaymentLinkResponseSerializer
-from atmos.services import AtmosService, AtmosAPIError
 
 
 class CreateOrderAPIView(APIView):
@@ -79,14 +80,36 @@ def generate_payment_link(order):
 
     if order.payment_type == 'atmos':
         try:
-            atmos_service = AtmosService()
-            transaction = atmos_service.create_payment_link(
-                amount=order.amount,
-                account=str(order.id)  # Order ID as account
+            # Get PayTechUZ Atmos configuration
+            paytechuz_config = getattr(settings, 'PAYTECHUZ', {})
+            atmos_config = paytechuz_config.get('ATMOS', {})
+
+            # Initialize Atmos gateway with PayTechUZ configuration
+            atmos_gateway = AtmosGateway(
+                consumer_key=atmos_config.get('CONSUMER_KEY'),
+                consumer_secret=atmos_config.get('CONSUMER_SECRET'),
+                store_id=atmos_config.get('STORE_ID'),
+                terminal_id=atmos_config.get('TERMINAL_ID'),
+                is_test_mode=atmos_config.get('IS_TEST_MODE', True)
             )
-            # payment_url is stored as attribute, not in model
-            return transaction.payment_url
-        except AtmosAPIError as e:
+
+            # Create payment
+            payment_result = atmos_gateway.create_payment(
+                account_id=order.id,
+                amount=float(order.amount)
+            )
+
+            # Create PaymentTransaction record
+            PaymentTransaction.create_transaction(
+                gateway=PaymentTransaction.ATMOS,
+                transaction_id=payment_result['transaction_id'],
+                account_id=str(order.id),
+                amount=order.amount
+            )
+
+            return payment_result['payment_url']
+
+        except Exception as e:
             raise ValueError(f"Atmos payment error: {str(e)}")
 
     raise ValueError(f"Unsupported payment type: {order.payment_type}")
