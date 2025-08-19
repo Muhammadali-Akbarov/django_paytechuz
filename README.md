@@ -41,7 +41,7 @@ Visit: http://127.0.0.1:8000/
 {
   "product_name": "Test Product",
   "amount": "100.00",
-  "payment_type": "payme"
+  "payment_type": "payme" // click, atmos
 }
 ```
 
@@ -51,7 +51,7 @@ Visit: http://127.0.0.1:8000/
 {
   "order_id": 1,
   "payment_url": "https://test.paycom.uz/...",
-  "payment_type": "payme",
+  "payment_type": "payme", // click, atmos
   "amount": "100.00",
   "status": "pending"
 }
@@ -70,7 +70,7 @@ curl -X POST http://127.0.0.1:8000/api/orders/create \
   -d '{
     "product_name": "Test Product",
     "amount": "100.00",
-    "payment_type": "payme"
+    "payment_type": "payme" // click, atmos
   }'
 ```
 
@@ -79,12 +79,23 @@ curl -X POST http://127.0.0.1:8000/api/orders/create \
 Create `.env` file with your payment gateway credentials:
 
 ```env
+# Payme Configuration
 PAYME_ID=your_payme_id
 PAYME_KEY=your_payme_key
+
+# Click Configuration
 CLICK_SERVICE_ID=your_service_id
 CLICK_MERCHANT_ID=your_merchant_id
 CLICK_MERCHANT_USER_ID=your_merchant_user_id
 CLICK_SECRET_KEY=your_secret_key
+
+# Atmos Configuration
+ATMOS_CONSUMER_KEY=your_atmos_consumer_key
+ATMOS_CONSUMER_SECRET=your_atmos_consumer_secret
+ATMOS_STORE_ID=your_atmos_store_id
+ATMOS_TERMINAL_ID=your_atmos_terminal_id # optional
+ATMOS_API_KEY=your_atmos_api_key
+ATMOS_TEST_MODE=True
 ```
 
 ## ✨ Features
