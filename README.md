@@ -79,6 +79,9 @@ curl -X POST http://127.0.0.1:8000/api/orders/create \
 Create `.env` file with your payment gateway credentials:
 
 ```env
+# PayTechUZ License Key (Required)
+PAYTECH_LICENSE_API_KEY=your_license_api_key
+
 # Payme Configuration
 PAYME_ID=your_payme_id
 PAYME_KEY=your_payme_key
